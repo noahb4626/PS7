@@ -2,11 +2,12 @@
 
 rm(list = ls())
 
+setwd("/Users/noahbardash/Documents/GitHub/PS7")
+
 library("dplyr")
 library("ggplot2")
 library("reshape")
 
-setwd("/Users/noahbardash/Documents/GitHub/PS7")
 crime_data <- read.csv("March2018.csv")
 
 #2
@@ -67,7 +68,8 @@ View(crime_neighborhood_counts)
 crime_neighborhood_counts2 <- temp %>% 
   group_by(neighborhood) %>% 
   summarise(count=n())
-# Neighborhood 36 has the most crime
+View(crime_neighborhood_counts2)
+# Neighborhood 35 has the most crime
 
 #4
 robberies_by_district <- temp %>%
@@ -80,3 +82,13 @@ crimes_by_district <- temp %>%
 crimes_by_district <- crimes_by_district[-1,]
 robberies_by_district$count/crimes_by_district$count
 # District 5 has the greatest proportion of robberies
+
+#5
+class(crime_type_counts$DateOccur.new)
+crime_type_counts$DateOccur.new <- as.Date(crime_type_counts$DateOccur.new, format="%m/%d/%Y")
+threshold <- as.Date("02/01/2018", format="%m/%d/%Y")
+crime_types_sub <- subset(crime_type_counts, crime_type_counts$DateOccur.new > threshold)
+ggplot(crime_types_sub, aes(x=DateOccur.new, y = count, color=variable)) + geom_point()
+
+#6
+
